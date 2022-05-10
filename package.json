@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node ./src/app/index.js",
+    "dev": "nodemon ./src/app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,6 +19,7 @@
     "mongodb": "^4.5.0"
   },
   "devDependencies": {
+    "chalk": "^5.0.1",
     "nodemon": "^2.0.16"
   }
 }
