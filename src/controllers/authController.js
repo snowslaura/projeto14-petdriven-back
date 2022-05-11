@@ -2,6 +2,7 @@ import db from "./../app/db.js"
 import joi from "joi"
 import {v4 as uuid} from "uuid"
 import { ObjectId } from "mongodb"
+import bcrypt from "bcrypt"
 
 export async function signUp(req,res){
     
