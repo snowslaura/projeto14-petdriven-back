@@ -10,7 +10,7 @@ export async function signUp(req,res){
     const passwordHash = bcrypt.hashSync(user.password,parseInt(process.env.HASH));
     const schema = joi.object({
         name: joi.string().required(),
-        email: joi.string().email(),
+        email: joi.string().email().required(),
         password:joi.string().alphanum().min(6).max(12).required(),
         confirmation:joi.ref("password")
     })
@@ -18,22 +18,22 @@ export async function signUp(req,res){
     const {error} = schema.validate(user,{abortEarly: false})
 
     if(error){
-        res.send("Erro ao cadastrar").status(422)
+        res.status(422).send("Erro ao cadastrar")
         return 
     }
 
     try{
         const checkUser = await db.collection("users").findOne({email: user.email})
+        console.log(checkUser)
         if(checkUser){
-            res.send("Usuário com esse email já existe").status(409)
-            return
+            return res.status(409).send("Usuário com esse email já existe")
         }
         delete user.confirmation
         await db.collection("users").insertOne({...user, password: passwordHash});
-        res.send("Cadastro realizado com sucesso").status(201);
+        res.status(201).send("Cadastro realizado com sucesso");
     }catch(e){
         console.error(e);
-        res.sendStatus(500);
+        res.send("Erro de conexão com servidor").status(500);
     }
 }
 
