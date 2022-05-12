@@ -10,13 +10,13 @@ export async function getProduct(req,res){
         const user = await db.collection("users").findOne({_id: session.userId })
         const product = await db.collection("products").findOne({_id: new ObjectId(id)})
         if(product){            
-            res.send(product).status(200)
+            res.status(200).send(product)
         }else{
-            res.send("Produto não encontrado ou não está disponível").status(404)
+            res.status(404).send("Produto não encontrado ou não está disponível")
         }
     }catch(e){
         console.error(e);
-        res.send("Erro ao conectar ao servidor").status(500);
+        res.status(500).send("Erro ao conectar ao servidor");
     }
 }
 
@@ -30,12 +30,12 @@ export async function postProductOnCart(req,res){
         const product = await db.collection("products").findOne({_id: new ObjectId(id)})        
         if(product){ 
             await db.collection("cart").insertOne({idUser: user._id, idProduct:product._id})           
-            res.send("Produto adicionado ao carrinho").status(200)
+            res.status(200).send("Produto adicionado ao carrinho")
         }else{
-            res.send("Produto não encontrado ou não disponível").status(404)
+            res.status(404).send("Produto não encontrado ou não disponível")
         }
     }catch(e){
         console.error(e);
-        res.send("Erro ao conectar ao servidor").status(500);
+        res.status(500).send("Erro ao conectar ao servidor");
     }
 }

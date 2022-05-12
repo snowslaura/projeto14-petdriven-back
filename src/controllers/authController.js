@@ -33,7 +33,7 @@ export async function signUp(req,res){
         res.status(201).send("Cadastro realizado com sucesso");
     }catch(e){
         console.error(e);
-        res.send("Erro de conexão com servidor").status(500);
+        res.status(500).send("Erro de conexão com servidor");
     }
 }
 
@@ -45,17 +45,17 @@ export async function signIn(req,res){
         if(user && bcrypt.compareSync(password, user.password) && userSessionExists){
             const token = uuid(); 
             await db.collection("sessions").updateOne({userId:user._id},{$set:{token}})
-            res.send({token, name:user.name}).status(200);
+            res.status(200).send({token, name:user.name});
         }
         else if(user && bcrypt.compareSync(password, user.password)){
             const token = uuid();            
             await db.collection("sessions").insertOne({userId:user._id, token})            
-            res.send({token, name:user.name}).status(200);
+            res.status(200).send({token, name:user.name});
         }else{
-            res.send("Erro ao logar").status(401);
+            res.status(401).send("Erro ao logar");
         }
     }catch(e){
         console.error(e);
-        res.send("Erro de conexão com servidor").status(500)
+        res.status(500).send("Erro de conexão com servidor")
     }
 }
