@@ -16,7 +16,7 @@ export async function getProduct(req,res){
         }
     }catch(e){
         console.error(e);
-        res.sendStatus(500);
+        res.send("Erro ao conectar ao servidor").status(500);
     }
 }
 
@@ -36,6 +36,6 @@ export async function postProductOnCart(req,res){
         }
     }catch(e){
         console.error(e);
-        res.sendStatus(500);
+        res.send("Erro ao conectar ao servidor").status(500);
     }
 }

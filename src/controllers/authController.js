@@ -18,19 +18,19 @@ export async function signUp(req,res){
     const {error} = schema.validate(user,{abortEarly: false})
 
     if(error){
-        res.status(422)
+        res.send("Erro ao cadastrar").status(422)
         return 
     }
 
     try{
         const checkUser = await db.collection("users").findOne({email: user.email})
         if(checkUser){
-            res.sendStatus(409)
+            res.send("Usuário com esse email já existe").status(409)
             return
         }
         delete user.confirmation
         await db.collection("users").insertOne({...user, password: passwordHash});
-        res.sendStatus(201);
+        res.send("Cadastro realizado com sucesso").status(201);
     }catch(e){
         console.error(e);
         res.sendStatus(500);
@@ -52,10 +52,10 @@ export async function signIn(req,res){
             await db.collection("sessions").insertOne({userId:user._id, token})            
             res.send({token, name:user.name}).status(200);
         }else{
-            res.sendStatus(401);
+            res.send("Erro ao logar").status(401);
         }
     }catch(e){
         console.error(e);
-        res.sendStatus(500)
+        res.send("Erro de conexão com servidor").status(500)
     }
 }
