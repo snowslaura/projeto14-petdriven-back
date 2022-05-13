@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import { getProduct, postProductOnCart } from "../controllers/productController.js";
-import validateToken from "./../middlewares/authMiddlewares.js"
+import {validateToken} from "./../middlewares/authMiddlewares.js"
 
 const productRouter = Router();
 
