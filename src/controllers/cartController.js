@@ -13,7 +13,7 @@ export async function deleteProduct(req, res){
     const product = await db.collection("cart").findOne({
         idProduct: ObjectId(req.params) 
     }) 
-    if(product && product.quantity >= 1){
+    if(product && product.quantity > 1){
         await db.collection("cart").updateOne({
             idProduct: ObjectId(req.params)}, 
         {
@@ -21,7 +21,7 @@ export async function deleteProduct(req, res){
         }
         })
     }
-    else if(product && product.quantity === 0){
+    else if(product && product.quantity <= 1){
         await db.collection("cart").deleteOne({
             idProduct: ObjectId(req.params) 
         })
@@ -40,4 +40,11 @@ export async function addProduct(req, res){
        }
     })
 }
+}
+
+export async function finalizePurchase(req, res){
+    const allUserProducts = res.locals.cart
+    await db.collection("cart").deleteMany({
+        allUserProducts
+    })
 }
