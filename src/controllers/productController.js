@@ -21,14 +21,14 @@ export async function postProductOnCart(req,res){
     try{        
         const product = await db.collection("products").findOne({_id: new ObjectId(id)})
         if(product){ 
-            const productAlredySelect = await db.collection("cart").findOne({idUser: res.locals.user._id, idProduct:product._id})
+            const productAlredySelect = await db.collection("cart").findOne({idUser: user._id, idProduct:product._id})
             if(productAlredySelect){
                 await db.collection("cart").updateOne({
-                    idUser: new ObjectId(res.locals.user._id), idProduct:product._id
-                },{$set:{quantity: productAlredySelect.quantity + 1}})
+                    idUser: user._id, idProduct:product._id
+                },{quantity: productAlredySelect.quantity + 1})
             }
             else{
-                await db.collection("cart").insertOne({idUser: res.locals.user._id, idProduct:product._id, quantity: 1})
+                await db.collection("cart").insertOne({idUser: user._id, idProduct:product._id, quantity: 1})
             }
             res.send("Produto adicionado ao carrinho").status(200)
         }else{
