@@ -25,7 +25,7 @@ export async function postProductOnCart(req,res){
             if(productAlredySelect){
                 await db.collection("cart").updateOne({
                     idUser: res.locals.user._id, idProduct:product._id
-                },{quantity: productAlredySelect.quantity + 1})
+                },{$set:{quantity: productAlredySelect.quantity + 1}})
             }
             else{
                 await db.collection("cart").insertOne({idUser: res.locals.user._id, idProduct:product._id, quantity: 1})

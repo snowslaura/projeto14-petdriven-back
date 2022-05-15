@@ -8,8 +8,6 @@ import authRouter from "./../routes/authrouter.js";
 import cartRouter from "./../routes/cartRouter.js"
 import productRouter from "../routes/productRouter.js";
 import productsRouter from "../routes/productsRouter.js";
-import productRouter from "../routes/productRouter.js";
-
 
 const app = express();
 
