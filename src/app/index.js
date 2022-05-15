@@ -7,6 +7,7 @@ dotenv.config();
 import authRouter from "./../routes/authrouter.js";
 import cartRouter from "./../routes/cartRouter.js"
 import productsRouter from "../routes/productsRouter.js";
+import productRouter from "../routes/productRouter.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(json());
 app.use(authRouter);
 app.use(productsRouter);
 app.use(cartRouter)
+app.use(productRouter)
 
 const PORT = process.env.PORT || 5000
 

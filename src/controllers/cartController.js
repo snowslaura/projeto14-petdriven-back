@@ -3,34 +3,41 @@ import db from "../app/db.js"
 
 export async function getCart(req, res){
     try{
-        res.send(res.locals.cart).status(200)
+        res.status(200).send(res.locals.cart)
     }catch(e){
         res.sendStatus(404)
     }
 }
 
 export async function deleteProduct(req, res){
-    try{
-        const deleteProduct = req.body
-        await db.collection("cart").deleteOne({
-            _id: new ObjectId(deleteProduct.id)
+    const product = await db.collection("cart").findOne({
+        idProduct: ObjectId(req.params) 
+    }) 
+    if(product && product.quantity >= 1){
+        await db.collection("cart").updateOne({
+            idProduct: ObjectId(req.params)}, 
+        {
+        $set:{ quantity: product.quantity - 1
+        }
         })
-        res.sendStatus(200)
-    }catch(e){
-        res.sendStatus(500)
+    }
+    else if(product && product.quantity === 0){
+        await db.collection("cart").deleteOne({
+            idProduct: ObjectId(req.params) 
+        })
     }
 }
 
 export async function addProduct(req, res){
-    try{
-        const addProduct = req.body
-        const product = await db.collection("cart").findOne({
-            _id: new ObjectId(addProduct.id)
-        })
-        await db.collection("cart").insertOne({product})
-        res.sendStatus(200)
-    }catch(e){
-        res.sendStatus(500)
-    }
-
+    const product = await db.collection("cart").findOne({
+        idProduct: ObjectId(req.params) 
+    }) 
+    if(product){
+    await db.collection("cart").updateOne({
+        idProduct: ObjectId(req.params)}, 
+     {
+       $set:{ quantity: product.quantity + 1
+       }
+    })
+}
 }
