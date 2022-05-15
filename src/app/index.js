@@ -9,7 +9,6 @@ import cartRouter from "./../routes/cartRouter.js"
 import productRouter from "../routes/productRouter.js";
 import productsRouter from "../routes/productsRouter.js";
 
-
 const app = express();
 
 app.use(cors());

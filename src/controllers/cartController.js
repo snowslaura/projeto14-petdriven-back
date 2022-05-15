@@ -52,9 +52,15 @@ export async function addProduct(req, res){
 
 export async function finalizePurchase(req, res){
     const allUserProducts = res.locals.cart
+    const payment = req.body
     try{
     await db.collection("cart").deleteMany({
         idUser: allUserProducts[0].idUser
+    })
+    await db.collection("sales").insertOne({
+        allUserProducts,
+        total: payment.total,
+        payment: payment.payment
     })
     }catch(e){
         res.status(404).send("Carrinho vazio")
