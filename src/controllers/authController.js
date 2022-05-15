@@ -41,10 +41,7 @@ export async function signIn(req,res){
     const {email, password} = req.body;
     try{
         const user = await db.collection("users").findOne({email});
-        console.log(user , "   user")
-        console.log(user._id)
         const userSessionExists = await db.collection("sessions").findOne({userId: new ObjectId(user._id)})
-        console.log(userSessionExists)
         if(user && bcrypt.compareSync(password, user.password) && userSessionExists){
             const token = uuid(); 
             await db.collection("sessions").updateOne({userId:user._id},{$set:{token}})
