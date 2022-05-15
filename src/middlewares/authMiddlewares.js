@@ -1,4 +1,4 @@
-import db from "./../db.js"
+import db from "../app/db.js"
 
 export async function validateToken(req,res,next){
 
@@ -13,6 +13,7 @@ export async function validateToken(req,res,next){
         const user = await db.collection("users").findOne({_id:session.userId});
         if(!user) return res.sendStatus(404);  
 
+        res.locals.user = user
         next();
 
     }catch(e){
