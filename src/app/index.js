@@ -16,9 +16,9 @@ app.use(cors());
 app.use(json());
 
 app.use(authRouter);
+app.use(productRouter);
 app.use(productsRouter);
-app.use(cartRouter)
-app.use(productRouter)
+app.use(cartRouter);
 
 const PORT = process.env.PORT || 5000
 

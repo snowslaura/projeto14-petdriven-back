@@ -1,7 +1,8 @@
 import db from "../app/db.js"
+import { ObjectId } from "mongodb";
+
 
 export async function validateToken(req,res,next){
-
     const {authorization} = req.headers;
     const token = authorization?.replace('Bearer ','');
     if(!token) return res.sendStatus(401);
@@ -9,10 +10,10 @@ export async function validateToken(req,res,next){
     try{        
         const session = await db.collection("sessions").findOne({token})
         if(!session) return res.sendStatus(401)
-
-        const user = await db.collection("users").findOne({_id:session.userId});
+       
+        const user = await db.collection("users").findOne({_id:new ObjectId(session.userId)});
         if(!user) return res.sendStatus(404);  
-
+       
         res.locals.user = user
         next();
 
