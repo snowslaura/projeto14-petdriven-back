@@ -5,8 +5,8 @@ import { findCart } from "../middlewares/cartMiddlewares.js"
 
 const cartRouter = Router()
 cartRouter.get("/cart", validateToken, findCart, getCart)
-cartRouter.delete("/cart/:id", deleteProduct)
-cartRouter.post("/cart/:id", addProduct)
+cartRouter.put("/cart/:id", validateToken ,deleteProduct)
+cartRouter.post("/cart/:id", validateToken,addProduct)
 cartRouter.post("/checkout", validateToken, findCart ,finalizePurchase)
 
 export default cartRouter
