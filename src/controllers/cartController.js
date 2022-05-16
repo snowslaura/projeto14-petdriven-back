@@ -12,11 +12,13 @@ export async function getCart(req, res){
 export async function deleteProduct(req, res){
     try{
     const product = await db.collection("cart").findOne({
-        idProduct: ObjectId(req.params) 
+        idProduct: ObjectId(req.params),
+        idUser: res.locals.user._id
     }) 
     if(product && product.quantity > 1){
         await db.collection("cart").updateOne({
-            idProduct: ObjectId(req.params)}, 
+            idProduct: ObjectId(req.params),
+            idUser: res.locals.user._id}, 
         {
         $set:{ quantity: product.quantity - 1
         }
@@ -27,6 +29,7 @@ export async function deleteProduct(req, res){
             idProduct: ObjectId(req.params) 
         })
     }
+    res.sendStatus(200)
     }catch(e){
         res.status(401).send("Não foi possível remover o produto")
     }
@@ -35,16 +38,18 @@ export async function deleteProduct(req, res){
 export async function addProduct(req, res){
     try{
     const product = await db.collection("cart").findOne({
-        idProduct: ObjectId(req.params) 
+        idProduct: ObjectId(req.params),
+        idUser: res.locals.user._id
     }) 
     if(product){
         await db.collection("cart").updateOne({
-            idProduct: ObjectId(req.params)}, 
+            idProduct: ObjectId(req.params),
+            idUser: res.locals.user._id}, 
         {
-        $set:{ quantity: product.quantity + 1
-        }
+        $set:{ quantity: product.quantity + 1}
         })    
     }
+    res.sendStatus(200)
     }catch(e){
         res.status(401).send("Não foi possível adicionar o produto")
     }
